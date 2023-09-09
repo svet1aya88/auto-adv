@@ -6,4 +6,5 @@ out/
 target/
 test-output/
 lib/
+build
 *.iml
