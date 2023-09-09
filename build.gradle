@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+String buildWorkspace = System.getenv('WORKSPACE')
+if (buildWorkspace == null) {
+    buildWorkspace = 'build'
+    File buildWorkspaceFolder = new File(buildWorkspace)
+    if (buildWorkspaceFolder.exists()) {
+        delete(buildWorkspaceFolder)
+        buildWorkspaceFolder.mkdir()
+    }
+}
+
+buildDir = buildWorkspace + '/compiled'
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    testCompile
+}
+
+dependencies {
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+//    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.7'
+    implementation group: 'org.testng', name: 'testng', version: '7.4.0'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    implementation group: 'org.assertj', name: 'assertj-core', version: '3.23.1'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.13.0'
+    implementation group: 'org.awaitility', name: 'awaitility', version: '4.2.0'
+    implementation platform('org.apache.logging.log4j:log4j-bom:2.20.0')
+    implementation 'org.apache.logging.log4j:log4j-api'
+    runtimeOnly 'org.apache.logging.log4j:log4j-core'
+}
+
+test {
+    useTestNG() {
+        useDefaultListeners = true
+        outputDirectory = file("$buildDir/testngOutput")
+    }
+}
