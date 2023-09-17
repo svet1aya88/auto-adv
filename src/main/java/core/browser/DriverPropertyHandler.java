@@ -7,14 +7,14 @@ public class DriverPropertyHandler {
     private static final String DRIVERS_PATH = "/src/main/resources/drivers/";
 
     public static String getChromeDriverPath() {
-        return getDriversPath(DriverSingleton.DriverType.CHROME);
+        return getDriverPath(DriverSingleton.DriverType.CHROME);
     }
 
     public static String getFirefoxDriverPath() {
-        return getDriversPath(DriverSingleton.DriverType.FIREFOX);
+        return getDriverPath(DriverSingleton.DriverType.FIREFOX);
     }
 
-    private static String getDriversPath(DriverSingleton.DriverType driverType) {
+    private static String getDriverPath(DriverSingleton.DriverType driverType) {
         String driverFileName;
         switch (driverType) {
             case FIREFOX:

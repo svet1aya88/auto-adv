@@ -9,8 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class DriverSingleton {
 
-    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-
+    private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
     private static final String BROWSER_PROPERTY = "browser";
     private static final String DRIVER_FIREFOX = "webdriver.gecko.driver";
     private static final String DRIVER_CHROME = "webdriver.chrome.driver";
@@ -23,10 +22,10 @@ public class DriverSingleton {
     }
 
     public static WebDriver getDriverInstance() {
-        if (driver.get() == null) {
-            driver.set(createDriver());
+        if (DRIVER.get() == null) {
+            DRIVER.set(createDriver());
         }
-        return driver.get();
+        return DRIVER.get();
     }
 
     private static WebDriver createDriver() {
@@ -48,9 +47,9 @@ public class DriverSingleton {
 
     public static void quit() {
         try {
-            if (driver.get() != null) {
-                driver.get().quit();
-                driver.remove();
+            if (DRIVER.get() != null) {
+                DRIVER.get().quit();
+                DRIVER.remove();
             }
         } catch (NoSuchSessionException e) {
             e.printStackTrace();
@@ -66,7 +65,7 @@ public class DriverSingleton {
     }
 
     private static DriverType getDriverType() {
-        String browserProperty = System.getProperty("browser");
+        String browserProperty = System.getProperty(BROWSER_PROPERTY);
         if (browserProperty == null) {
             browserProperty = "firefox";
         }
