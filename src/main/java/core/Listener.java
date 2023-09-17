@@ -1,20 +1,12 @@
 package core;
 
-import com.google.common.io.Files;
 import core.browser.DriverSingleton;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import org.testng.Reporter;
 import org.testng.TestListenerAdapter;
-
-import java.io.File;
-import java.io.IOException;
 
 public class Listener extends TestListenerAdapter implements IInvokedMethodListener, ITestListener, IRetryAnalyzer {
 

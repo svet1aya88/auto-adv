@@ -2,9 +2,7 @@ package business.pages.dashboards;
 
 import business.pages.BasePage;
 import core.browser.DriverSingleton;
-import core.utilities.controls.CustomControl;
 import core.utilities.controls.Image;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;

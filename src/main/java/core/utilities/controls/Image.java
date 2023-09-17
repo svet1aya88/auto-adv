@@ -1,6 +1,5 @@
 package core.utilities.controls;
 
-import lombok.Getter;
 import org.openqa.selenium.WebElement;
 
 public class Image extends CustomControl {

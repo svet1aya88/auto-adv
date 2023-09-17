@@ -1,7 +1,6 @@
 package core.utilities.controls;
 
 import core.utilities.waits.Waiter;
-import lombok.Getter;
 import org.openqa.selenium.WebElement;
 
 public class TextInput extends CustomControl {

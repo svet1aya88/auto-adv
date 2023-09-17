@@ -29,17 +29,18 @@ public class DriverSingleton {
     }
 
     private static WebDriver createDriver() {
-        WebDriver driver = null;
+        WebDriver driver;
         switch (getDriverType()) {
-            case FIREFOX:
+            case FIREFOX -> {
                 System.setProperty(DRIVER_FIREFOX, DriverPropertyHandler.getFirefoxDriverPath());
                 System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
                 driver = new FirefoxDriver();
-                break;
-            case CHROME:
+            }
+            case CHROME -> {
                 System.setProperty(DRIVER_CHROME, DriverPropertyHandler.getChromeDriverPath());
                 driver = new ChromeDriver();
-                break;
+            }
+            default -> throw new PropertyException("Unsupported driver type!");
         }
         driver.manage().window().maximize();
         return driver;
@@ -69,13 +70,11 @@ public class DriverSingleton {
         if (browserProperty == null) {
             browserProperty = "firefox";
         }
-        switch (browserProperty) {
-            case "chrome":
-                return DriverType.CHROME;
-            case "firefox":
-                return DriverType.FIREFOX;
-            default:
-                throw new PropertyException("Browser type '{}' is not defined in properties file", browserProperty);
-        }
+        return switch (browserProperty) {
+            case "chrome" -> DriverType.CHROME;
+            case "firefox" -> DriverType.FIREFOX;
+            default ->
+                    throw new PropertyException("Browser type '{}' is not defined in properties file", browserProperty);
+        };
     }
 }

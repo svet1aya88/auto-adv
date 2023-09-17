@@ -10,7 +10,7 @@ import core.utilities.properties.TestPropertyReader;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginTest extends BaseTest {
 
