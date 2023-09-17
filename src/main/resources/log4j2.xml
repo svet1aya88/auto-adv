@@ -4,15 +4,6 @@
         <Console name="Console">
             <PatternLayout pattern="%d{HH:mm:ss} | %msg%n"/>
         </Console>
-        <RollingFile name="RollingFile" fileName="target/logs/${name}.log"
-                     filePattern="target/logs/$${date:yyyy-MM}/${name}-%d{yyyy-MM-dd}-%i.log.gz">
-            <PatternLayout>
-                <pattern>${pattern}</pattern>
-            </PatternLayout>
-            <Policies>
-                <TimeBasedTriggeringPolicy/><!-- Rotated everyday -->
-            </Policies>
-        </RollingFile>
         <ReportPortalLog4j2Appender name="ReportPortalAppender">
             <PatternLayout
                     pattern="%d [%t] %-5level %logger{36} - %msg%n%throwable"/>
@@ -21,7 +12,6 @@
     <Loggers>
         <Root level="INFO">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="RollingFile"/>
             <AppenderRef ref="ReportPortalAppender"/>
         </Root>
     </Loggers>

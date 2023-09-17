@@ -7,6 +7,7 @@ import org.awaitility.Awaitility;
 import org.awaitility.Durations;
 import org.awaitility.core.ConditionTimeoutException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -45,6 +46,7 @@ public class Waiter {
                     .atMost(Duration.ofSeconds(WaitTimeout.ONE_MINUTE.getSeconds()))
                     .pollInSameThread().pollInterval(Durations.ONE_SECOND)
                     .ignoreException(StaleElementReferenceException.class)
+                    .ignoreException(NoSuchElementException.class)
                     .until(element::isDisplayed);
         } catch (ConditionTimeoutException e) {
             throw new TestException("'{}' web element is not displayed!", elementName);

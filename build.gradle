@@ -6,6 +6,7 @@ buildscript {
 
 plugins {
     id 'java'
+    id "org.sonarqube" version "4.3.1.3277"
 }
 
 String buildWorkspace = System.getenv('WORKSPACE')
@@ -25,10 +26,20 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 configurations {
     testCompile
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "atm-adv"
+        property "sonar.organization", "atm-adv"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.token", "sqp_81bc70c36ae78b76c2d244b67511f22146021ccf"
+    }
 }
 
 dependencies {
