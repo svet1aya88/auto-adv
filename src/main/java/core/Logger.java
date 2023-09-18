@@ -6,6 +6,8 @@ public class Logger {
 
     private static org.apache.logging.log4j.Logger serviceLogger = LogManager.getRootLogger();
 
+    private Logger() {}
+
     public static void warn(String message) {
         serviceLogger.warn(message);
     }
@@ -24,7 +26,7 @@ public class Logger {
 
     public static void info(String format, Object arg1, Object arg2) {
         serviceLogger.info(format, arg1, arg2);
-    };
+    }
 
     public static void info(String format, Object arg) {
         serviceLogger.info(format, arg);

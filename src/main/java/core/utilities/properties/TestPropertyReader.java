@@ -4,7 +4,6 @@ import core.utilities.exceptions.PropertyException;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -31,10 +30,6 @@ public class TestPropertyReader {
         FileInputStream stream;
         try {
             stream = new FileInputStream(getPropertiesDirectory() + propertyType.getFileName());
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
             this.propertyFile = new PropertyResourceBundle(stream);
         } catch (IOException e) {
             throw new PropertyException("Cannot find properties file {}!", propertyType.getFileName());

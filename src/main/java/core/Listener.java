@@ -15,11 +15,10 @@ public class Listener extends TestListenerAdapter implements IInvokedMethodListe
     int count = 1;
     int maxRetryCount = 2;
 
+    @Override
     public void afterInvocation(IInvokedMethod method, ITestResult testResult) {
-        if (method.isTestMethod()) {
-            if (!testSuccess) {
-                testResult.setStatus(ITestResult.FAILURE);
-            }
+        if (method.isTestMethod() && !testSuccess) {
+            testResult.setStatus(ITestResult.FAILURE);
         }
     }
 

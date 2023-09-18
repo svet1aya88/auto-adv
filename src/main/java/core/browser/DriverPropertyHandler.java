@@ -1,7 +1,5 @@
 package core.browser;
 
-import core.utilities.exceptions.PropertyException;
-
 public class DriverPropertyHandler {
 
     private static final String DRIVERS_PATH = "/src/main/resources/drivers/";
@@ -15,17 +13,10 @@ public class DriverPropertyHandler {
     }
 
     private static String getDriverPath(DriverSingleton.DriverType driverType) {
-        String driverFileName;
-        switch (driverType) {
-            case FIREFOX:
-                driverFileName = "geckodriver.exe";
-                break;
-            case CHROME:
-                driverFileName = "chromedriver.exe";
-                break;
-            default:
-                throw new PropertyException("{} browser type is not defined in code!");
-        }
+        String driverFileName = switch (driverType) {
+            case FIREFOX -> "geckodriver.exe";
+            case CHROME -> "chromedriver.exe";
+        };
         return System.getProperty("user.dir") + DRIVERS_PATH + driverFileName;
     }
 }

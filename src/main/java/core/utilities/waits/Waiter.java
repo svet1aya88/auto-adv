@@ -18,6 +18,8 @@ import java.time.Duration;
 
 public class Waiter {
 
+    private Waiter() {}
+
     private static void jsWait(JavascriptWaits wait) {
         WebDriver driverInstance = DriverSingleton.getDriverInstance();
         try {
