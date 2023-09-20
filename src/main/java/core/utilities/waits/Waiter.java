@@ -11,21 +11,21 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
 public class Waiter {
 
-    private Waiter() {}
+    private Waiter() {
+    }
 
     private static void jsWait(JavascriptWaits wait) {
         WebDriver driverInstance = DriverSingleton.getDriverInstance();
         try {
-            (new WebDriverWait(driverInstance, WaitTimeout.ONE_MINUTE.getSeconds()))
-                    .until((ExpectedCondition<Boolean>) driver ->
-                    {
+            Awaitility.await()
+                    .atMost(Duration.ofSeconds(WaitTimeout.ONE_MINUTE.getSeconds()))
+                    .pollInSameThread().pollInterval(Durations.ONE_SECOND)
+                    .until(() -> {
                         JavascriptExecutor js = (JavascriptExecutor) driverInstance;
                         return (Boolean) js.executeScript(wait.getJsCode());
                     });
