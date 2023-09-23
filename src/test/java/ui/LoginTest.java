@@ -1,7 +1,7 @@
 package ui;
 
 import business.pages.dashboards.AllDashboardsPage;
-import business.pages.login.LoginPage;
+import business.steps.LoginService;
 import core.Listener;
 import core.runner.BaseTest;
 import core.utilities.properties.LoginProperty;
@@ -24,13 +24,10 @@ public class LoginTest extends BaseTest {
         password = propertyReader.getProperty(LoginProperty.USER_DEFAULT_PASSWORD);
     }
 
+
     @Test(description = "Login as default user", retryAnalyzer = Listener.class)
     public void login() {
-        new LoginPage()
-                .open()
-                .fillLogin(login)
-                .fillPassword(password)
-                .clickLoginBtn();
+        new LoginService().login(login, password);
         assertThat(new AllDashboardsPage().isUserAvatarImgDisplayed()).as("User avatar is displayed").isTrue();
     }
 }

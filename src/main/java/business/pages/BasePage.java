@@ -10,7 +10,17 @@ public abstract class BasePage {
         Waiter.waitForPageLoad();
     }
 
-    protected void open(String url) {
+    private void open(String url) {
         DriverSingleton.getDriverInstance().get(url);
+    }
+
+    protected <T> T navigateTo(Class<T> pageClass, String url) {
+        open(url);
+        try {
+            return pageClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

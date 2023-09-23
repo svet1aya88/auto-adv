@@ -5,6 +5,7 @@ import core.utilities.exceptions.PropertyException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
@@ -17,8 +18,8 @@ public class TestPropertyReader {
         this.propertyFile = getPropertyFile(propertyType);
     }
 
-    private static String getPropertiesDirectory() {
-        String propertiesPath = System.getProperty("user.dir") + TEST_PROPERTIES_PATH;
+    private static String getPropertiesDirectory(String stage) {
+        String propertiesPath = System.getProperty("user.dir") + TEST_PROPERTIES_PATH + stage + "/";
         if ((new File(propertiesPath)).isDirectory()) {
             return propertiesPath;
         } else {
@@ -27,9 +28,13 @@ public class TestPropertyReader {
     }
 
     private ResourceBundle getPropertyFile(PropertyType propertyType) {
+        String stageProperty = System.getProperty("stage");
+        if (Objects.isNull(stageProperty)) {
+            throw new PropertyException("Stage is null!");
+        }
         FileInputStream stream;
         try {
-            stream = new FileInputStream(getPropertiesDirectory() + propertyType.getFileName());
+            stream = new FileInputStream(getPropertiesDirectory(stageProperty) + propertyType.getFileName());
             this.propertyFile = new PropertyResourceBundle(stream);
         } catch (IOException e) {
             throw new PropertyException("Cannot find properties file {}!", propertyType.getFileName());

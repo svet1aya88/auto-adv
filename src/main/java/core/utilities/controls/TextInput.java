@@ -10,7 +10,6 @@ public class TextInput extends CustomControl {
     }
 
     public void fillText(String text) {
-        Waiter.waitForElement(super.getWrappedElement(), super.getName());
-        super.getWrappedElement().sendKeys(text);
+        Waiter.waitForElement(super.getWrappedElement(), super.getName()).sendKeys(text);
     }
 }

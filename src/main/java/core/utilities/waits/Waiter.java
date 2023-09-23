@@ -7,8 +7,6 @@ import org.awaitility.Awaitility;
 import org.awaitility.Durations;
 import org.awaitility.core.ConditionTimeoutException;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -42,16 +40,16 @@ public class Waiter {
         jsWait(JavascriptWaits.PAGE_LOAD);
     }
 
-    public static void waitForElement(WebElement element, String elementName) throws TestException {
+    public static WebElement waitForElement(WebElement element, String elementName) throws TestException {
         try {
             Awaitility.await().alias(String.format("Wait for '%s' web element to be displayed", elementName))
                     .atMost(Duration.ofSeconds(WaitTimeout.ONE_MINUTE.getSeconds()))
                     .pollInSameThread().pollInterval(Durations.ONE_SECOND)
-                    .ignoreException(StaleElementReferenceException.class)
-                    .ignoreException(NoSuchElementException.class)
+                    .ignoreExceptions()
                     .until(element::isDisplayed);
         } catch (ConditionTimeoutException e) {
             throw new TestException("'{}' web element is not displayed!", elementName);
         }
+        return element;
     }
 }

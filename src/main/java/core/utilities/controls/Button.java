@@ -10,7 +10,6 @@ public class Button extends CustomControl {
     }
 
     public void click() {
-        Waiter.waitForElement(super.getWrappedElement(), super.getName());
-        super.getWrappedElement().click();
+        Waiter.waitForElement(super.getWrappedElement(), super.getName()).click();
     }
 }
