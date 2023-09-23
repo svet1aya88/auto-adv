@@ -7,6 +7,8 @@ import core.utilities.properties.PropertyType;
 import core.utilities.properties.TestPropertyReader;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,7 +35,8 @@ public class LoginTestJunit extends BaseTest {
     @ParameterizedTest
     @DisplayName("Verify failed login")
     @MethodSource("invalidCreds")
-    void invalidLogin(String username, String password) {
+    @Execution(ExecutionMode.CONCURRENT)
+    void invalidLoginJunit(String username, String password) {
         LoginService loginService = new LoginService().login(username, password);
         assertThat(loginService.isLoginFailed()).as("Login failed").isTrue();
     }
