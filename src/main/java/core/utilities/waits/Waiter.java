@@ -11,6 +11,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 public class Waiter {
 
@@ -51,5 +53,25 @@ public class Waiter {
             throw new TestException("'{}' web element is not displayed!", elementName);
         }
         return element;
+    }
+
+    public static void waitFor(Callable<Boolean> action, String actionFailedText) throws TestException {
+        try {
+            Awaitility.await()
+                    .atMost(Duration.ofSeconds(WaitTimeout.ONE_MINUTE.getSeconds()))
+                    .pollInSameThread().pollInterval(Durations.ONE_HUNDRED_MILLISECONDS)
+                    .ignoreExceptions()
+                    .until(action);
+        } catch (ConditionTimeoutException e) {
+            throw new TestException(actionFailedText);
+        }
+    }
+
+    public static void waitForListOfElements(List<? extends WebElement> elements, String elementsName) {
+        try {
+            waitFor(() -> !elements.isEmpty(), "Elements not found!");
+        } catch (ConditionTimeoutException e) {
+            throw new TestException("'{}' elements are not displayed!", elementsName);
+        }
     }
 }

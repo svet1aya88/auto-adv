@@ -14,7 +14,7 @@ public class LoginService {
         loginProps = new TestPropertyReader(PropertyType.LOGIN);
     }
 
-    public LoginService login(String username, String password) {
+    public MenuService login(String username, String password) {
         String loginUrl = loginProps.getProperty(LoginProperty.LOGIN_URL);
         Logger.info("Login to {} with username/password: {}/{}", loginUrl, username, password);
         new LoginPage()
@@ -22,7 +22,7 @@ public class LoginService {
                 .fillLogin(username)
                 .fillPassword(password)
                 .clickLoginBtn();
-        return this;
+        return new MenuService();
     }
 
     public boolean isLoginFailed() {

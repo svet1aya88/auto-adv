@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="test" verbose="1" data-provider-thread-count="2">
-    <test name="some tests" parallel="methods" thread-count="2" >
+    <test name="Login tests" parallel="methods" thread-count="2" >
         <groups>
             <run>
-                <include name="test"/>
+                <include name="login"/>
                 <exclude name="unstable"/>
             </run>
         </groups>

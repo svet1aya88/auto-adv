@@ -60,20 +60,24 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.9.3'
 }
 
-test {
+project.task([type: Test], "run-testng") {
+    systemProperties = [
+            "stage" : project.findProperty("stage") ?: "qa"
+    ]
     useTestNG() {
         useDefaultListeners = false
         outputDirectory = file("$buildDir/testngOutput")
         listeners = [
                 "com.epam.reportportal.testng.ReportPortalTestNGListener"
         ]
-        systemProperties = [
-                "stage": project.findProperty("stage") ?: "qa"
-        ]
+
+        filter {
+            suites("src/main/resources/testng/${project.findProperty("xml")}.xml")
+        }
     }
 }
 
-project.task([type: Test], "run-test") {
+project.task([type: Test], "run-junit") {
     useJUnitPlatform() {
         systemProperties = [
                 "stage" : project.findProperty("stage") ?: "qa",

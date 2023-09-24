@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="test" verbose="1" data-provider-thread-count="2">
+    <test name="Filters tests" parallel="methods" thread-count="2" >
+        <groups>
+            <run>
+                <include name="filters"/>
+                <exclude name="unstable"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="ui.*"/>
+        </packages>
+    </test>
+</suite>

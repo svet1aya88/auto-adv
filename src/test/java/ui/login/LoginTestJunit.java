@@ -1,4 +1,4 @@
-package ui;
+package ui.login;
 
 import business.steps.LoginService;
 import core.runner.BaseTest;
@@ -37,8 +37,8 @@ public class LoginTestJunit extends BaseTest {
     @MethodSource("invalidCreds")
     @Execution(ExecutionMode.CONCURRENT)
     void invalidLoginJunit(String username, String password) {
-        LoginService loginService = new LoginService().login(username, password);
-        assertThat(loginService.isLoginFailed()).as("Login failed").isTrue();
+        new LoginService().login(username, password);
+        assertThat(new LoginService().isLoginFailed()).as("Login failed").isTrue();
     }
 
     static Stream<Arguments> invalidCreds() {

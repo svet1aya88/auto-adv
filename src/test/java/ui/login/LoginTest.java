@@ -1,7 +1,7 @@
-package ui;
+package ui.login;
 
-import business.pages.dashboards.AllDashboardsPage;
 import business.steps.LoginService;
+import business.steps.MenuService;
 import core.Listener;
 import core.runner.BaseTest;
 import core.utilities.properties.LoginProperty;
@@ -29,16 +29,16 @@ public class LoginTest extends BaseTest {
     }
 
 
-    @Test(description = "Login as default user", retryAnalyzer = Listener.class)
+    @Test(description = "Login as default user", retryAnalyzer = Listener.class, groups = {"login"})
     public void login() {
         new LoginService().login(username, password);
-        assertThat(new AllDashboardsPage().isUserAvatarImgDisplayed()).as("User avatar is displayed").isTrue();
+        assertThat(new MenuService().isUserIvatarDisplayed()).as("User avatar is displayed").isTrue();
     }
 
-    @Test(description = "Verify failed login", dataProvider = "invalidCreds")
+    @Test(description = "Verify failed login", dataProvider = "invalidCreds", groups = {"login"})
     public void invalidLogin(String username, String password) {
-        LoginService loginService = new LoginService().login(username, password);
-        assertThat(loginService.isLoginFailed()).as("Login failed").isTrue();
+        new LoginService().login(username, password);
+        assertThat(new LoginService().isLoginFailed()).as("Login failed").isTrue();
     }
 
     @DataProvider(parallel = true)
