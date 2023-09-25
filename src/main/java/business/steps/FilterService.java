@@ -52,7 +52,7 @@ public class FilterService {
         Logger.info("Update filter with:");
         Logger.info("- new name: {}", initialName);
         new FiltersPage()
-                .clickFilterEditButton(newName)
+                .clickFilterEditButton(initialName)
                 .fillName(newName)
                 .clickUpdateButton();
         waitForSuccessSystemMessage();

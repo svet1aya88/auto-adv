@@ -10,6 +10,9 @@ plugins {
     id "org.sonarqube" version "4.3.1.3277"
 }
 
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = "UTF-8"
+
 String buildWorkspace = System.getenv('WORKSPACE')
 if (buildWorkspace == null) {
     buildWorkspace = 'build'
@@ -62,7 +65,8 @@ dependencies {
 
 project.task([type: Test], "run-testng") {
     systemProperties = [
-            "stage" : project.findProperty("stage") ?: "qa"
+            "stage"        : project.findProperty("stage") ?: "qa",
+            "file.encoding": "UTF-8"
     ]
     useTestNG() {
         useDefaultListeners = false

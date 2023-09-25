@@ -4,6 +4,8 @@ import business.steps.LoginService;
 import business.steps.MenuService;
 import core.Listener;
 import core.runner.BaseTest;
+import core.utilities.dataprovider.DataType;
+import core.utilities.dataprovider.TestDataProvider;
 import core.utilities.properties.LoginProperty;
 import core.utilities.properties.PropertyType;
 import core.utilities.properties.TestPropertyReader;
@@ -17,9 +19,6 @@ public class LoginTest extends BaseTest {
 
     private String username;
     private String password;
-    private static final String INVALID_USERNAME = "invalid username";
-    private static final String INVALID_PASSWORD = "invalid password";
-    private static final String EMPTY_VALUE = " ";
 
     @BeforeClass(alwaysRun = true)
     public void setup() {
@@ -27,7 +26,6 @@ public class LoginTest extends BaseTest {
         username = propertyReader.getProperty(LoginProperty.USER_DEFAULT_LOGIN);
         password = propertyReader.getProperty(LoginProperty.USER_DEFAULT_PASSWORD);
     }
-
 
     @Test(description = "Login as default user", retryAnalyzer = Listener.class, groups = {"login"})
     public void login() {
@@ -43,12 +41,6 @@ public class LoginTest extends BaseTest {
 
     @DataProvider(parallel = true)
     private Object[][] invalidCreds() {
-        return new Object[][]{
-                {EMPTY_VALUE, EMPTY_VALUE},
-                {EMPTY_VALUE, password},
-                {username, EMPTY_VALUE},
-                {INVALID_USERNAME, password},
-                {username, INVALID_PASSWORD},
-                {INVALID_USERNAME, INVALID_PASSWORD}};
+        return TestDataProvider.getData(DataType.LOGIN_CREDS);
     }
 }

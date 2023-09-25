@@ -26,7 +26,7 @@ public class FiltersPage {
     @FindBy(css = "[class*='filterName'] a")
     private List<WebElement> filterNameLinks;
 
-    @FindBy()
+    @FindBy(css = "[class*='filterName__pencil-icon']")
     private WebElement pencilBtn;
 
     public FiltersPage() {

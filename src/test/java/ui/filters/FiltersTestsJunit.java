@@ -4,20 +4,19 @@ import business.models.Filter;
 import business.steps.FilterService;
 import business.steps.LoginService;
 import business.steps.MenuService;
-import core.runner.BaseTest;
-import core.utilities.dataprovider.DataType;
-import core.utilities.dataprovider.TestDataProvider;
 import core.utilities.properties.LoginProperty;
 import core.utilities.properties.PropertyType;
 import core.utilities.properties.TestPropertyReader;
 import core.utilities.random.Randomizer;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FiltersTests extends BaseTest {
+public class FiltersTestsJunit {
 
     private TestPropertyReader propertyReader;
 
@@ -26,8 +25,11 @@ public class FiltersTests extends BaseTest {
         propertyReader = new TestPropertyReader(PropertyType.LOGIN);
     }
 
-//    @Test(description = "Create filter", dataProvider = "validFilterName", groups = {"filters"})
-    public void createFilter(String filterName) {
+    @ParameterizedTest
+    @DisplayName("Create filter")
+//    @MethodSource("core.utilities.dataprovider.TestDataProvider#getDataJunit")
+    @Execution(ExecutionMode.CONCURRENT)
+    void createFilter(String filterName) {
         Filter newFilter = Filter.builder()
                 .name(filterName)
                 .description(Randomizer.generateAlphanumericStringWithSpaces())
@@ -46,8 +48,11 @@ public class FiltersTests extends BaseTest {
                 .isTrue();
     }
 
-    @Test(description = "Update filter name", dataProvider = "validFilterName", groups = {"filters"})
-    public void updateFilterName(String newFilterName) {
+    @ParameterizedTest
+    @DisplayName("Update filter name")
+//    @MethodSource("core.utilities.dataprovider.TestDataProvider#getDataJunit")
+    @Execution(ExecutionMode.CONCURRENT)
+    void updateFilterName(String newFilterName) {
         Filter filterForUpdate = Filter.builder()
                 .name(Randomizer.generateAlphanumericStringWithSpaces())
                 .description(Randomizer.generateAlphanumericStringWithSpaces())
@@ -67,10 +72,5 @@ public class FiltersTests extends BaseTest {
         assertThat(filterService.isFilterFound(newFilterName))
                 .as(String.format("Filter with updated name '%s' is found", filterForUpdate.getName()))
                 .isTrue();
-    }
-
-    @DataProvider(parallel = true)
-    private Object[][] validFilterName() {
-        return TestDataProvider.getData(DataType.FILTER_NAME);
     }
 }
