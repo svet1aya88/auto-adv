@@ -3,9 +3,9 @@ package core.utilities.controls;
 import core.utilities.waits.Waiter;
 import org.openqa.selenium.WebElement;
 
-public class Button extends CustomControl {
+public class Link extends CustomControl {
 
-    public Button(WebElement wrappedElement, String name) {
+    public Link(WebElement wrappedElement, String name) {
         super(wrappedElement, name);
     }
 

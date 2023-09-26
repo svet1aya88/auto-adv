@@ -7,12 +7,12 @@ import org.awaitility.Awaitility;
 import org.awaitility.Durations;
 import org.awaitility.core.ConditionTimeoutException;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 public class Waiter {
 
@@ -42,16 +42,36 @@ public class Waiter {
         jsWait(JavascriptWaits.PAGE_LOAD);
     }
 
-    public static void waitForElement(WebElement element, String elementName) throws TestException {
+    public static WebElement waitForElement(WebElement element, String elementName) throws TestException {
         try {
             Awaitility.await().alias(String.format("Wait for '%s' web element to be displayed", elementName))
                     .atMost(Duration.ofSeconds(WaitTimeout.ONE_MINUTE.getSeconds()))
                     .pollInSameThread().pollInterval(Durations.ONE_SECOND)
-                    .ignoreException(StaleElementReferenceException.class)
-                    .ignoreException(NoSuchElementException.class)
+                    .ignoreExceptions()
                     .until(element::isDisplayed);
         } catch (ConditionTimeoutException e) {
             throw new TestException("'{}' web element is not displayed!", elementName);
+        }
+        return element;
+    }
+
+    public static void waitFor(Callable<Boolean> action, String actionFailedText) throws TestException {
+        try {
+            Awaitility.await()
+                    .atMost(Duration.ofSeconds(WaitTimeout.ONE_MINUTE.getSeconds()))
+                    .pollInSameThread().pollInterval(Durations.ONE_HUNDRED_MILLISECONDS)
+                    .ignoreExceptions()
+                    .until(action);
+        } catch (ConditionTimeoutException e) {
+            throw new TestException(actionFailedText);
+        }
+    }
+
+    public static void waitForListOfElements(List<? extends WebElement> elements, String elementsName) {
+        try {
+            waitFor(() -> !elements.isEmpty(), "Elements not found!");
+        } catch (ConditionTimeoutException e) {
+            throw new TestException("'{}' elements are not displayed!", elementsName);
         }
     }
 }

@@ -1,6 +1,6 @@
 package core.utilities.exceptions;
 
-import java.text.MessageFormat;
+import org.slf4j.helpers.MessageFormatter;
 
 public class PropertyException extends RuntimeException {
 
@@ -9,6 +9,6 @@ public class PropertyException extends RuntimeException {
     }
 
     public PropertyException(String format, Object arg) {
-        super(MessageFormat.format(format, arg));
+        super(MessageFormatter.format(format, arg).getMessage());
     }
 }
