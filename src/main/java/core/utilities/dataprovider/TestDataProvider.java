@@ -7,6 +7,7 @@ import core.utilities.properties.TestPropertyReader;
 import core.utilities.random.Randomizer;
 import org.junit.jupiter.params.provider.Arguments;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class TestDataProvider {
@@ -42,27 +43,13 @@ public class TestDataProvider {
         }
     }
 
-    public static Stream<Arguments> getDataJunit(DataType dataType) {
-        switch (dataType) {
-            case LOGIN_CREDS -> {
-                return Stream.of(
-                        Arguments.of(EMPTY_VALUE, EMPTY_VALUE),
-                        Arguments.of(EMPTY_VALUE, PASSWORD),
-                        Arguments.of(USERNAME, EMPTY_VALUE),
-                        Arguments.of(INVALID_USERNAME, PASSWORD),
-                        Arguments.of(USERNAME, INVALID_PASSWORD),
-                        Arguments.of(INVALID_USERNAME, INVALID_PASSWORD)
-                );
-            }
-            case FILTER_NAME -> {
-                return Stream.of(
-                        Arguments.of(Randomizer.generateAlphanumericStringWithSpaces(FILTER_NAME_MIN_LENGTH, FILTER_NAME_MIN_LENGTH)),
-                        Arguments.of(Randomizer.generateAlphanumericStringWithSpaces(FILTER_NAME_MIN_LENGTH, FILTER_NAME_MAX_LENGTH)),
-                        Arguments.of(Randomizer.generateAlphanumericStringWithSpaces(FILTER_NAME_MAX_LENGTH, FILTER_NAME_MAX_LENGTH)),
-                        Arguments.of(Randomizer.generateStringWithSpecialSymbols(FILTER_NAME_MIN_LENGTH, FILTER_NAME_MAX_LENGTH))
-                );
-            }
-            default -> throw new PropertyException("Test data type {} is not defined!", dataType);
-        }
+    public static Stream<Arguments> getLoginTestData() {
+        return Arrays.stream(TestDataProvider.getData(DataType.LOGIN_CREDS))
+                .map(array -> Arguments.of(array[0], array[1]));
+    }
+
+    public static Stream<Arguments> getFilterTestData() {
+        return Arrays.stream(TestDataProvider.getData(DataType.FILTER_NAME))
+                .map(array -> Arguments.of(array[0], array[1]));
     }
 }

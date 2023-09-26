@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.testng.annotations.BeforeClass;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +28,7 @@ public class FiltersTestsJunit {
 
     @ParameterizedTest
     @DisplayName("Create filter")
-//    @MethodSource("core.utilities.dataprovider.TestDataProvider#getDataJunit")
+    @MethodSource("core.utilities.dataprovider.TestDataProvider#getFilterTestData")
     @Execution(ExecutionMode.CONCURRENT)
     void createFilter(String filterName) {
         Filter newFilter = Filter.builder()
@@ -50,7 +51,7 @@ public class FiltersTestsJunit {
 
     @ParameterizedTest
     @DisplayName("Update filter name")
-//    @MethodSource("core.utilities.dataprovider.TestDataProvider#getDataJunit")
+    @MethodSource("core.utilities.dataprovider.TestDataProvider#getFilterTestData")
     @Execution(ExecutionMode.CONCURRENT)
     void updateFilterName(String newFilterName) {
         Filter filterForUpdate = Filter.builder()
