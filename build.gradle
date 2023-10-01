@@ -61,6 +61,8 @@ dependencies {
     implementation 'com.epam.reportportal:logger-java-log4j:5.0.1'
     implementation 'org.junit.jupiter:junit-jupiter:5.5.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.9.3'
+    implementation group: 'io.cucumber', name: 'cucumber-java', version: '7.14.0'
+    implementation group: 'io.cucumber', name: 'cucumber-testng', version: '7.14.0'
 }
 
 project.task([type: Test], "run-testng") {
