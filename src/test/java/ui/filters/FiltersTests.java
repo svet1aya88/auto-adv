@@ -26,7 +26,7 @@ public class FiltersTests extends BaseTest {
         propertyReader = new TestPropertyReader(PropertyType.LOGIN);
     }
 
-//    @Test(description = "Create filter", dataProvider = "validFilterName", groups = {"filters"})
+    @Test(description = "Create filter", dataProvider = "validFilterName", groups = {"filters"})
     public void createFilter(String filterName) {
         Filter newFilter = Filter.builder()
                 .name(filterName)

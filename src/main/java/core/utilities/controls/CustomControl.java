@@ -5,8 +5,8 @@ import core.utilities.exceptions.TestException;
 import core.utilities.waits.Waiter;
 import lombok.Getter;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
 @Getter
 public abstract class CustomControl {
@@ -34,8 +34,12 @@ public abstract class CustomControl {
                 .getAttribute(ElementAttribute.CLASS.getName()).contains("invalid");
     }
 
-    public void hover() {
-        Actions actions = new Actions(DriverSingleton.getDriverInstance());
-        actions.moveToElement(this.getWrappedElement()).perform();
+    public void displayByJS() {
+        JavascriptExecutor js = (JavascriptExecutor) DriverSingleton.getDriverInstance();
+        js.executeScript("arguments[0].style.display = 'block';", this.getWrappedElement());
+    }
+
+    public void click() {
+        Waiter.waitForElement(this.getWrappedElement(), this.getName()).click();
     }
 }

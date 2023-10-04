@@ -4,10 +4,10 @@ import business.pages.launches.AddEditFilterPopupBlock;
 import business.pages.launches.LaunchesPage;
 import core.browser.DriverSingleton;
 import core.utilities.controls.Button;
-import core.utilities.controls.Link;
 import core.utilities.controls.TextInput;
 import core.utilities.exceptions.TestException;
 import core.utilities.waits.Waiter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -25,9 +25,6 @@ public class FiltersPage {
 
     @FindBy(css = "[class*='filterName'] a")
     private List<WebElement> filterNameLinks;
-
-    @FindBy(css = "[class*='filterName__pencil-icon']")
-    private WebElement pencilBtn;
 
     public FiltersPage() {
         PageFactory.initElements(DriverSingleton.getDriverInstance(), this);
@@ -49,8 +46,10 @@ public class FiltersPage {
     }
 
     public AddEditFilterPopupBlock clickFilterEditButton(String filterName) {
-        new Link(getFilterNameLink(filterName), "Filter link").hover();
-        new Button(pencilBtn, "Edit button").click();
+        String editButtonXpath = "./following-sibling::span[contains(@class,'filterName__pencil-icon')]";
+        Button editButton = new Button(getFilterNameLink(filterName).findElement(By.xpath(editButtonXpath)), "Edit button");
+        editButton.displayByJS();
+        editButton.click();
         return new AddEditFilterPopupBlock();
     }
 

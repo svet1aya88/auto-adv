@@ -63,6 +63,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.9.3'
     implementation group: 'io.cucumber', name: 'cucumber-java', version: '7.14.0'
     implementation group: 'io.cucumber', name: 'cucumber-testng', version: '7.14.0'
+    implementation 'io.cucumber:cucumber-picocontainer:7.14.0'
+    implementation 'org.apache.maven.plugins:maven-surefire-plugin:3.1.2'
 }
 
 project.task([type: Test], "run-testng") {

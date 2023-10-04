@@ -1,4 +1,4 @@
-package cucumber;
+package bdd.runner;
 
 import io.cucumber.testng.CucumberOptions;
 
@@ -7,8 +7,8 @@ import io.cucumber.testng.CucumberOptions;
                 "json:target/cucumber-reports/CucumberTests.json",
                 "testng:target/cucumber-reports/CucumberTests.xml"},
         monochrome = true,
-        glue = "src.main.java.business.cucumber.steps",
-        features = "src.main.java.business.cucumber.features"
+        glue = {"business.cucumber.steps", "business.cucumber.hooks"},
+        features = "src/test/java/bdd/features/"
 )
 public class CucumberTestRunner {
 }
