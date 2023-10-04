@@ -7,6 +7,7 @@ import core.utilities.properties.LoginProperty;
 import core.utilities.properties.PropertyType;
 import core.utilities.properties.TestPropertyReader;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -70,5 +71,10 @@ public class LoginSteps {
     @ParameterType(value = "true|True|TRUE|false|False|FALSE")
     public Boolean booleanValue(String value) {
         return Boolean.valueOf(value);
+    }
+
+    @DataTableType(replaceWithEmptyString = "[blank]")
+    public String stringType(String cell) {
+        return cell;
     }
 }

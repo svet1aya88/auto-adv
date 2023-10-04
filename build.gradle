@@ -82,6 +82,7 @@ project.task([type: Test], "run-testng") {
         filter {
             suites("src/main/resources/testng/${project.findProperty("xml")}.xml")
         }
+        jvmArgs(["-Ddataproviderthreadcount=2"])
     }
 }
 
