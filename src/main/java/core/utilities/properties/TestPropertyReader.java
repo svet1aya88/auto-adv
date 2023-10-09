@@ -30,7 +30,7 @@ public class TestPropertyReader {
     private ResourceBundle getPropertyFile(PropertyType propertyType) {
         String stageProperty = System.getProperty("stage");
         if (Objects.isNull(stageProperty)) {
-            throw new PropertyException("Stage is null!");
+            stageProperty = PropertyStage.QA.getName();
         }
         FileInputStream stream;
         try {
