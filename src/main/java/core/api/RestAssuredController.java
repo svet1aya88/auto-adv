@@ -12,7 +12,7 @@ public class RestAssuredController {
                 .body(model)
                 .post(uri)
                 .then()
-                .log().ifValidationFails()
+                .log().body()
                 .assertThat()
                 .statusCode(status);
     }
@@ -23,7 +23,7 @@ public class RestAssuredController {
                 .body(model)
                 .put(uri)
                 .then()
-                .log().ifValidationFails()
+                .log().body()
                 .assertThat()
                 .statusCode(status);
     }
@@ -34,7 +34,7 @@ public class RestAssuredController {
                 .body(requestBody)
                 .patch(uri)
                 .then()
-                .log().ifValidationFails()
+                .log().body()
                 .assertThat()
                 .statusCode(status);
     }
@@ -44,7 +44,7 @@ public class RestAssuredController {
                 .log().all()
                 .get(uri)
                 .then()
-                .log().ifValidationFails()
+                .log().body()
                 .assertThat()
                 .statusCode(status);
     }
@@ -54,7 +54,7 @@ public class RestAssuredController {
                 .log().all()
                 .delete(uri)
                 .then()
-                .log().ifValidationFails()
+                .log().body()
                 .assertThat()
                 .statusCode(status);
     }

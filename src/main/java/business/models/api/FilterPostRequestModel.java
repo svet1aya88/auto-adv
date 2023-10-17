@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FilterRequestModel {
+public class FilterPostRequestModel {
 
     @JsonProperty("conditions")
     private List<FilterCondition> conditions;
@@ -26,4 +26,6 @@ public class FilterRequestModel {
     private List<FilterOrder> orders;
     @JsonProperty("type")
     private String type;
+
+
 }
