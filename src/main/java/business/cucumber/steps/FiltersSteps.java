@@ -2,7 +2,7 @@ package business.cucumber.steps;
 
 import business.cucumber.context.Context;
 import business.cucumber.context.TestContext;
-import business.models.Filter;
+import business.models.ui.Filter;
 import business.pages.filters.FiltersPage;
 import business.pages.menu.LeftMenuPanelBlock;
 import business.pages.menu.SystemMessageBlock;
