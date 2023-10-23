@@ -45,8 +45,9 @@ public class ApiTests extends BaseTest {
     @Test(groups = {"api"}, description = "Get all filters")
     public void getAllFilters() {
         RestAssuredController
-                .get(specification, MessageFormat.format(baseUri, PROJECT_NAME), HttpStatus.SC_OK)
+                .get(specification, MessageFormat.format(baseUri, PROJECT_NAME))
                 .assertThat()
+                .statusCode(HttpStatus.SC_OK)
                 .body("content.size()", greaterThan(0));
     }
 
@@ -54,8 +55,9 @@ public class ApiTests extends BaseTest {
     public void errorWithWrongProjectName() {
         String invalidProjectName = "abc";
         RestAssuredController
-                .get(specification, MessageFormat.format(baseUri, invalidProjectName), HttpStatus.SC_NOT_FOUND)
+                .get(specification, MessageFormat.format(baseUri, invalidProjectName))
                 .assertThat()
+                .statusCode(HttpStatus.SC_NOT_FOUND)
                 .body("errorCode", equalTo(4040))
                 .body("message", equalTo(String.format(
                         "Project '%s' not found. Did you use correct project name?", invalidProjectName)));
@@ -81,8 +83,9 @@ public class ApiTests extends BaseTest {
 
         RestAssuredController
                 .post(specification, Converter.convertJsonToString(filterRequestModel),
-                        MessageFormat.format(baseUri, PROJECT_NAME), HttpStatus.SC_CREATED)
+                        MessageFormat.format(baseUri, PROJECT_NAME))
                 .assertThat()
+                .statusCode(HttpStatus.SC_CREATED)
                 .body("id", greaterThan(0));
     }
 
@@ -105,8 +108,9 @@ public class ApiTests extends BaseTest {
 
         RestAssuredController
                 .post(specification, Converter.convertJsonToString(filterRequestModel),
-                        MessageFormat.format(baseUri, PROJECT_NAME), HttpStatus.SC_BAD_REQUEST)
+                        MessageFormat.format(baseUri, PROJECT_NAME))
                 .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("errorCode", equalTo(4001))
                 .body("message", containsString("Incorrect Request. " +
                         "[Field 'name' should not contain only white spaces and shouldn't be empty. " +
@@ -134,8 +138,9 @@ public class ApiTests extends BaseTest {
 
         RestAssuredController
                 .post(specification, Converter.convertJsonToString(filterRequestModel),
-                        MessageFormat.format(baseUri, PROJECT_NAME), HttpStatus.SC_BAD_REQUEST)
+                        MessageFormat.format(baseUri, PROJECT_NAME))
                 .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("errorCode", equalTo(40011))
                 .body("message", equalTo(String.format("Incorrect filtering parameters. " +
                         "Filter parameter '%s' is not defined", invalidFilteringFieldValue)));
@@ -162,8 +167,9 @@ public class ApiTests extends BaseTest {
                 .build();
 
         RestAssuredController
-                .put(specification, Converter.convertJsonToString(filterRequestModel), uri, HttpStatus.SC_OK)
+                .put(specification, Converter.convertJsonToString(filterRequestModel), uri)
                 .assertThat()
+                .statusCode(HttpStatus.SC_OK)
                 .body("message", equalTo(String.format("User filter with ID = '%s' successfully updated.", filterId)));
     }
 
@@ -187,7 +193,9 @@ public class ApiTests extends BaseTest {
                 .build();
 
         RestAssuredController
-                .put(specification, Converter.convertJsonToString(filterRequestModel), uri, HttpStatus.SC_BAD_REQUEST)
+                .put(specification, Converter.convertJsonToString(filterRequestModel), uri)
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("errorCode", equalTo(4001))
                 .body("message", containsString("Incorrect Request. " +
                         "[Field 'name' should not contain only white spaces and shouldn't be empty. " +
@@ -215,7 +223,9 @@ public class ApiTests extends BaseTest {
 
         RestAssuredController
                 .put(specification, Converter.convertJsonToString(filterRequestModel),
-                        MessageFormat.format(baseUri, PROJECT_NAME).concat("/61"), HttpStatus.SC_BAD_REQUEST)
+                        MessageFormat.format(baseUri, PROJECT_NAME).concat("/61"))
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("errorCode", equalTo(40012))
                 .body("message", equalTo(String.format(
                         "Sorting parameter Unable to find sort parameter '%s' is not defined", invalidSortingColumn)));
@@ -241,16 +251,20 @@ public class ApiTests extends BaseTest {
                 .build();
 
         String filterId = RestAssuredController
-                .post(specification, Converter.convertJsonToString(filterRequestModel), baseUri, HttpStatus.SC_CREATED)
+                .post(specification, Converter.convertJsonToString(filterRequestModel), baseUri)
+                .assertThat()
+                .statusCode(HttpStatus.SC_CREATED)
                 .extract().body().jsonPath().getString("id");
         String filterUri = baseUri.concat("/").concat(filterId);
         RestAssuredController
-                .delete(specification, filterUri, HttpStatus.SC_OK)
+                .delete(specification, filterUri)
                 .assertThat()
+                .statusCode(HttpStatus.SC_OK)
                 .body("message", equalTo(String.format("User filter with ID = '%s' successfully deleted.", filterId)));
         RestAssuredController
-                .get(specification, filterUri, HttpStatus.SC_NOT_FOUND)
+                .get(specification, filterUri)
                 .assertThat()
+                .statusCode(HttpStatus.SC_NOT_FOUND)
                 .body("errorCode", equalTo(40421))
                 .body("message", equalTo(String.format(
                         "User filter with ID '%s' not found on project '%s'. " +
@@ -261,9 +275,9 @@ public class ApiTests extends BaseTest {
     public void errorIfDeleteFilterWithInvalidId() {
         String filterId = "181818181";
         RestAssuredController
-                .delete(specification, MessageFormat.format(this.baseUri, PROJECT_NAME).concat("/").concat(filterId),
-                        HttpStatus.SC_NOT_FOUND)
+                .delete(specification, MessageFormat.format(this.baseUri, PROJECT_NAME).concat("/").concat(filterId))
                 .assertThat()
+                .statusCode(HttpStatus.SC_NOT_FOUND)
                 .body("errorCode", equalTo(40421))
                 .body("message", equalTo(String.format(
                         "User filter with ID '%s' not found on project '%s'. " +
