@@ -1,8 +1,13 @@
 package api;
 
 import business.models.api.FilterCondition;
+import business.models.api.FilterConditionType;
 import business.models.api.FilterOrder;
 import business.models.api.FilterPostRequestModel;
+import business.models.api.FilterResponseConstant;
+import business.models.api.FilterSortingColumn;
+import business.models.api.FilterType;
+import business.models.api.FilteringFieldType;
 import core.api.RestAssuredController;
 import core.runner.BaseTest;
 import core.utilities.Converter;
@@ -58,28 +63,14 @@ public class ApiTests extends BaseTest {
                 .get(specification, MessageFormat.format(baseUri, invalidProjectName))
                 .assertThat()
                 .statusCode(HttpStatus.SC_NOT_FOUND)
-                .body("errorCode", equalTo(4040))
-                .body("message", equalTo(String.format(
+                .body(FilterResponseConstant.ERROR_CODE.getValue(), equalTo(4040))
+                .body(FilterResponseConstant.MESSAGE.getValue(), equalTo(String.format(
                         "Project '%s' not found. Did you use correct project name?", invalidProjectName)));
     }
 
     @Test(groups = {"api"}, description = "Create new filter")
     public void createFilter() {
-        String randomName = Randomizer.generateAlphanumericStringWithSpaces();
-        FilterPostRequestModel filterRequestModel = FilterPostRequestModel.builder()
-                .conditions(Collections.singletonList(FilterCondition.builder()
-                        .condition("has")
-                        .filteringField("compositeAttribute")
-                        .value(randomName)
-                        .build()))
-                .description("test description")
-                .name(randomName)
-                .orders(Collections.singletonList(FilterOrder.builder()
-                        .isAsc(true)
-                        .sortingColumn("startTime")
-                        .build()))
-                .type("launch")
-                .build();
+        FilterPostRequestModel filterRequestModel = buildBaseFilterModel(Randomizer.generateAlphanumericStringWithSpaces());
 
         RestAssuredController
                 .post(specification, Converter.convertJsonToString(filterRequestModel),
@@ -91,58 +82,33 @@ public class ApiTests extends BaseTest {
 
     @Test(groups = {"api"}, description = "Verify that error is returned in response if creating new filter with empty name")
     public void errorIfCreateFilterWithEmptyName() {
-        FilterPostRequestModel filterRequestModel = FilterPostRequestModel.builder()
-                .conditions(Collections.singletonList(FilterCondition.builder()
-                        .condition("has")
-                        .filteringField("compositeAttribute")
-                        .value(Randomizer.generateAlphanumericStringWithSpaces())
-                        .build()))
-                .description("test description")
-                .name("")
-                .orders(Collections.singletonList(FilterOrder.builder()
-                        .isAsc(true)
-                        .sortingColumn("startTime")
-                        .build()))
-                .type("launch")
-                .build();
+        FilterPostRequestModel filterRequestModel = buildBaseFilterModel(Randomizer.generateAlphanumericStringWithSpaces());
+        filterRequestModel.setName("");
 
         RestAssuredController
                 .post(specification, Converter.convertJsonToString(filterRequestModel),
                         MessageFormat.format(baseUri, PROJECT_NAME))
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body("errorCode", equalTo(4001))
-                .body("message", containsString("Incorrect Request. " +
+                .body(FilterResponseConstant.ERROR_CODE.getValue(), equalTo(4001))
+                .body(FilterResponseConstant.MESSAGE.getValue(), containsString("Incorrect Request. " +
                         "[Field 'name' should not contain only white spaces and shouldn't be empty. " +
                         "Field 'name' should have size from '3' to '128'.]"));
     }
 
     @Test(groups = {"api"}, description = "Verify that error is returned in response if creating new filter with invalid filtering field")
     public void errorIfCreateFilterWithInvalidFilteringField() {
-        String filterName = Randomizer.generateAlphanumericStringWithSpaces();
         String invalidFilteringFieldValue = "invalid_value";
-        FilterPostRequestModel filterRequestModel = FilterPostRequestModel.builder()
-                .conditions(Collections.singletonList(FilterCondition.builder()
-                        .condition("has")
-                        .filteringField(invalidFilteringFieldValue)
-                        .value(filterName)
-                        .build()))
-                .description("test description")
-                .name(filterName)
-                .orders(Collections.singletonList(FilterOrder.builder()
-                        .isAsc(true)
-                        .sortingColumn("startTime")
-                        .build()))
-                .type("launch")
-                .build();
+        FilterPostRequestModel filterRequestModel = buildBaseFilterModel(Randomizer.generateAlphanumericStringWithSpaces());
+        filterRequestModel.getConditions().get(0).setFilteringField(invalidFilteringFieldValue);
 
         RestAssuredController
                 .post(specification, Converter.convertJsonToString(filterRequestModel),
                         MessageFormat.format(baseUri, PROJECT_NAME))
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body("errorCode", equalTo(40011))
-                .body("message", equalTo(String.format("Incorrect filtering parameters. " +
+                .body(FilterResponseConstant.ERROR_CODE.getValue(), equalTo(40011))
+                .body(FilterResponseConstant.MESSAGE.getValue(), equalTo(String.format("Incorrect filtering parameters. " +
                         "Filter parameter '%s' is not defined", invalidFilteringFieldValue)));
     }
 
@@ -150,105 +116,51 @@ public class ApiTests extends BaseTest {
     public void updateFilter() {
         String filterId = "61";
         String uri = MessageFormat.format(baseUri, PROJECT_NAME).concat("/").concat(filterId);
-        String randomName = Randomizer.generateAlphanumericStringWithSpaces();
-        FilterPostRequestModel filterRequestModel = FilterPostRequestModel.builder()
-                .conditions(Collections.singletonList(FilterCondition.builder()
-                        .condition("has")
-                        .filteringField("compositeAttribute")
-                        .value(randomName)
-                        .build()))
-                .description("test description")
-                .name(randomName)
-                .orders(Collections.singletonList(FilterOrder.builder()
-                        .isAsc(true)
-                        .sortingColumn("startTime")
-                        .build()))
-                .type("launch")
-                .build();
+        FilterPostRequestModel filterRequestModel = buildBaseFilterModel(Randomizer.generateAlphanumericStringWithSpaces());
 
         RestAssuredController
                 .put(specification, Converter.convertJsonToString(filterRequestModel), uri)
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
-                .body("message", equalTo(String.format("User filter with ID = '%s' successfully updated.", filterId)));
+                .body(FilterResponseConstant.MESSAGE.getValue(),
+                        equalTo(String.format("User filter with ID = '%s' successfully updated.", filterId)));
     }
 
     @Test(groups = {"api"}, description = "Verify that error is returned in response if updating filter with empty name")
     public void errorIfUpdateFilterWithEmptyName() {
         String uri = MessageFormat.format(baseUri, PROJECT_NAME).concat("/61");
-        String randomName = Randomizer.generateAlphanumericStringWithSpaces();
-        FilterPostRequestModel filterRequestModel = FilterPostRequestModel.builder()
-                .conditions(Collections.singletonList(FilterCondition.builder()
-                        .condition("has")
-                        .filteringField("compositeAttribute")
-                        .value(randomName)
-                        .build()))
-                .description("test description")
-                .name("")
-                .orders(Collections.singletonList(FilterOrder.builder()
-                        .isAsc(true)
-                        .sortingColumn("startTime")
-                        .build()))
-                .type("launch")
-                .build();
+        FilterPostRequestModel filterRequestModel = buildBaseFilterModel(Randomizer.generateAlphanumericStringWithSpaces());
+        filterRequestModel.setName("");
 
         RestAssuredController
                 .put(specification, Converter.convertJsonToString(filterRequestModel), uri)
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body("errorCode", equalTo(4001))
-                .body("message", containsString("Incorrect Request. " +
+                .body(FilterResponseConstant.ERROR_CODE.getValue(), equalTo(4001))
+                .body(FilterResponseConstant.MESSAGE.getValue(), containsString("Incorrect Request. " +
                         "[Field 'name' should not contain only white spaces and shouldn't be empty. " +
                         "Field 'name' should have size from '3' to '128'.]"));
     }
 
     @Test(groups = {"api"}, description = "Verify that error is returned in response if updating filter with invalid sorting column")
     public void errorIfUpdateFilterWithInvalidSortingColumn() {
-        String randomName = Randomizer.generateAlphanumericStringWithSpaces();
         String invalidSortingColumn = "abc";
-        FilterPostRequestModel filterRequestModel = FilterPostRequestModel.builder()
-                .conditions(Collections.singletonList(FilterCondition.builder()
-                        .condition("has")
-                        .filteringField("compositeAttribute")
-                        .value(randomName)
-                        .build()))
-                .description("test description")
-                .name(randomName)
-                .orders(Collections.singletonList(FilterOrder.builder()
-                        .isAsc(true)
-                        .sortingColumn(invalidSortingColumn)
-                        .build()))
-                .type("launch")
-                .build();
+        FilterPostRequestModel filterRequestModel = buildBaseFilterModel(Randomizer.generateAlphanumericStringWithSpaces());
 
         RestAssuredController
                 .put(specification, Converter.convertJsonToString(filterRequestModel),
                         MessageFormat.format(baseUri, PROJECT_NAME).concat("/61"))
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body("errorCode", equalTo(40012))
-                .body("message", equalTo(String.format(
+                .body(FilterResponseConstant.ERROR_CODE.getValue(), equalTo(40012))
+                .body(FilterResponseConstant.MESSAGE.getValue(), equalTo(String.format(
                         "Sorting parameter Unable to find sort parameter '%s' is not defined", invalidSortingColumn)));
     }
 
     @Test(groups = {"api"}, description = "Delete filter")
     public void deleteFilter() {
         String baseUri = MessageFormat.format(this.baseUri, PROJECT_NAME);
-        String randomName = Randomizer.generateAlphanumericStringWithSpaces();
-        FilterPostRequestModel filterRequestModel = FilterPostRequestModel.builder()
-                .conditions(Collections.singletonList(FilterCondition.builder()
-                        .condition("has")
-                        .filteringField("compositeAttribute")
-                        .value(randomName)
-                        .build()))
-                .description("test description")
-                .name(randomName)
-                .orders(Collections.singletonList(FilterOrder.builder()
-                        .isAsc(true)
-                        .sortingColumn("startTime")
-                        .build()))
-                .type("launch")
-                .build();
+        FilterPostRequestModel filterRequestModel = buildBaseFilterModel(Randomizer.generateAlphanumericStringWithSpaces());
 
         String filterId = RestAssuredController
                 .post(specification, Converter.convertJsonToString(filterRequestModel), baseUri)
@@ -260,13 +172,14 @@ public class ApiTests extends BaseTest {
                 .delete(specification, filterUri)
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
-                .body("message", equalTo(String.format("User filter with ID = '%s' successfully deleted.", filterId)));
+                .body(FilterResponseConstant.MESSAGE.getValue(),
+                        equalTo(String.format("User filter with ID = '%s' successfully deleted.", filterId)));
         RestAssuredController
                 .get(specification, filterUri)
                 .assertThat()
                 .statusCode(HttpStatus.SC_NOT_FOUND)
-                .body("errorCode", equalTo(40421))
-                .body("message", equalTo(String.format(
+                .body(FilterResponseConstant.ERROR_CODE.getValue(), equalTo(40421))
+                .body(FilterResponseConstant.MESSAGE.getValue(), equalTo(String.format(
                         "User filter with ID '%s' not found on project '%s'. " +
                                 "Did you use correct User Filter ID?", filterId, PROJECT_NAME)));
     }
@@ -278,10 +191,27 @@ public class ApiTests extends BaseTest {
                 .delete(specification, MessageFormat.format(this.baseUri, PROJECT_NAME).concat("/").concat(filterId))
                 .assertThat()
                 .statusCode(HttpStatus.SC_NOT_FOUND)
-                .body("errorCode", equalTo(40421))
-                .body("message", equalTo(String.format(
+                .body(FilterResponseConstant.ERROR_CODE.getValue(), equalTo(40421))
+                .body(FilterResponseConstant.MESSAGE.getValue(), equalTo(String.format(
                         "User filter with ID '%s' not found on project '%s'. " +
                                 "Did you use correct User Filter ID?", filterId, PROJECT_NAME)));
 
+    }
+
+    private FilterPostRequestModel buildBaseFilterModel(String filterName) {
+        return FilterPostRequestModel.builder()
+                .conditions(Collections.singletonList(FilterCondition.builder()
+                        .condition(FilterConditionType.HAS.getValue())
+                        .filteringField(FilteringFieldType.COMPOSITE_ATTRIBUTE.getValue())
+                        .value(filterName)
+                        .build()))
+                .description("test description")
+                .name(filterName)
+                .orders(Collections.singletonList(FilterOrder.builder()
+                        .isAsc(true)
+                        .sortingColumn(FilterSortingColumn.START_TIME.getValue())
+                        .build()))
+                .type(FilterType.LAUNCH.getValue())
+                .build();
     }
 }
