@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ElementAttribute {
 
-    CLASS("class");
+    CLASS("class"),
+    ALT("alt"),
+    DISABLED("disabled");
     private final String name;
 }
