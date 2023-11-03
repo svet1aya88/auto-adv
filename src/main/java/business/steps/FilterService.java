@@ -1,6 +1,6 @@
 package business.steps;
 
-import business.models.Filter;
+import business.models.ui.Filter;
 import business.pages.filters.FiltersPage;
 import business.pages.menu.SystemMessageBlock;
 import core.Logger;

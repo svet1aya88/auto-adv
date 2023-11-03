@@ -1,6 +1,6 @@
 package ui.filters;
 
-import business.models.Filter;
+import business.models.ui.Filter;
 import business.steps.FilterService;
 import business.steps.LoginService;
 import business.steps.MenuService;

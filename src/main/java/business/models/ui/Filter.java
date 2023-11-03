@@ -1,4 +1,4 @@
-package business.models;
+package business.models.ui;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

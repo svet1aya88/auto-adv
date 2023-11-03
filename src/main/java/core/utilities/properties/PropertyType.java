@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PropertyType {
 
-    LOGIN("login.properties");
+    LOGIN("login.properties"),
+    API("api.properties");
     private final String fileName;
 }
