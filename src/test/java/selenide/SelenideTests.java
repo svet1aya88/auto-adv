@@ -35,7 +35,7 @@ public class SelenideTests {
         assertThat(WebDriverRunner.url().contains("/ride/new-york/")).isTrue();
     }
 
-    @Test(groups = {"selenide"}, description = "Navigate to New York car service article")
+    @Test(groups = {"selenide"}, description = "Search and select a car")
     public void sixtSearchAndSelectACar() {
         new SixtSearchBlock()
                 .fillPickUpAndReturn("Budapest Váci Road")
@@ -44,4 +44,6 @@ public class SelenideTests {
 
         assertThat(WebDriverRunner.url().contains("/offercheckout")).isTrue();
     }
+
+    //TODO: drag&drop, resize
 }
