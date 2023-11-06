@@ -33,7 +33,7 @@ public class DriverSingleton {
         switch (getDriverType()) {
             case FIREFOX -> {
                 System.setProperty(DRIVER_FIREFOX, DriverPropertyHandler.getFirefoxDriverPath());
-                System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
+                System.setProperty(FirefoxDriver.SystemProperty.BROWSER_PROFILE, "/dev/null");
                 driver = new FirefoxDriver();
             }
             case CHROME -> {
