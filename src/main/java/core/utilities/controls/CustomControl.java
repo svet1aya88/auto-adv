@@ -9,8 +9,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
-
 @Getter
 public abstract class CustomControl {
 
@@ -56,7 +54,7 @@ public abstract class CustomControl {
 
     public void resize(WebElement element) {
         int width = element.getSize().getWidth();
-        new Actions(getWebDriver())
+        new Actions(DriverSingleton.getDriverInstance())
                 .moveToElement(element, width, 1)
                 .clickAndHold()
                 .moveByOffset(10, 10)
