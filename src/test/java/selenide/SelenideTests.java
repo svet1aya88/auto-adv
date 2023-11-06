@@ -44,6 +44,4 @@ public class SelenideTests {
 
         assertThat(WebDriverRunner.url().contains("/offercheckout")).isTrue();
     }
-
-    //TODO: drag&drop, resize
 }

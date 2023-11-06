@@ -7,6 +7,5 @@ public class SixtCookiesPopup {
 
     public void accept() {
         $(shadowCss("[data-testid='uc-accept-all-button']", "#usercentrics-root")).click();
-//        $("#usercentrics-root").getShadowRoot().findElement(By.cssSelector("[data-testid='uc-accept-all-button']")).click();
     }
 }

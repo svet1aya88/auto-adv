@@ -2,6 +2,7 @@ package business.selenide;
 
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import core.Logger;
 import core.utilities.controls.ElementAttribute;
 import core.utilities.controls.JavaScriptActions;
 import core.utilities.waits.Waiter;
@@ -18,5 +19,6 @@ public class SixtCarsOfferPage {
                 .should(exist);
         JavaScriptActions.scrollIntoView(carImage).click();
         Waiter.waitFor(() -> WebDriverRunner.url().contains("/offercheckout"), "Failed to load checkout!");
+        Logger.info("Select car with name '{}'", name);
     }
 }
