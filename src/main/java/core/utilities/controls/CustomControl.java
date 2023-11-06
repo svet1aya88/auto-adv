@@ -7,6 +7,9 @@ import lombok.Getter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 @Getter
 public abstract class CustomControl {
@@ -41,5 +44,23 @@ public abstract class CustomControl {
 
     public void click() {
         Waiter.waitForElement(this.getWrappedElement(), this.getName()).click();
+    }
+
+    public void dragAndDrop(WebElement element, WebElement dropZone) {
+       new Actions(DriverSingleton.getDriverInstance())
+               .clickAndHold(element)
+               .moveToElement(dropZone)
+               .release()
+               .build().perform();
+    }
+
+    public void resize(WebElement element) {
+        int width = element.getSize().getWidth();
+        new Actions(getWebDriver())
+                .moveToElement(element, width, 1)
+                .clickAndHold()
+                .moveByOffset(10, 10)
+                .release()
+                .build().perform();
     }
 }
