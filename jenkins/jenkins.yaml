@@ -1,28 +1,25 @@
 credentials:
   system:
     domainCredentials:
-      - credentials:
+    - credentials:
+      - string:
           id: "caaaa1c1-7f78-46d9-ad51-9a0609344330"
           scope: GLOBAL
-          string:
-            secret: "{AQAAABAAAAAwU3/rbgRBvZzq+v7MdMPQ1FV4jtOVE3UyAMm7TShcRutQ2FWUI+k/w2bQy/KQvOYUfuzJmnkBqODHGTGJt8LHiA==}"
-      - credentials:
+          secret: "{AQAAABAAAAAwU3/rbgRBvZzq+v7MdMPQ1FV4jtOVE3UyAMm7TShcRutQ2FWUI+k/w2bQy/KQvOYUfuzJmnkBqODHGTGJt8LHiA==}"
+      - string:
+          description: "github"
           id: "caa5e02a-b9bc-4213-ac35-2e19c6eed598"
           scope: GLOBAL
-          string:
-            description: "github"
-            secret: "{AQAAABAAAAAwZVXHK4yF1OxkjUVN8cEpyCr/n+ZUojeYXIcENeBxrPU6Bph45W5rKQ3AhRdzqosSgE07o0kKJbs+U11qmWduxA==}"
-      - credentials:
+          secret: "{AQAAABAAAAAwZVXHK4yF1OxkjUVN8cEpyCr/n+ZUojeYXIcENeBxrPU6Bph45W5rKQ3AhRdzqosSgE07o0kKJbs+U11qmWduxA==}"
+      - string:
           id: "jenkins-integration"
           scope: GLOBAL
-          string:
-            secret: "{AQAAABAAAAAwPJwbeS6m9vP+H/zrLy+BCewbojicfNl+oUSibF6yoe6bCtXgvL8Jzc01lZl1WIof+UMR7AHTYDBSlTnENHgf7g==}"
-      - credentials:
+          secret: "{AQAAABAAAAAwPJwbeS6m9vP+H/zrLy+BCewbojicfNl+oUSibF6yoe6bCtXgvL8Jzc01lZl1WIof+UMR7AHTYDBSlTnENHgf7g==}"
+      - usernamePassword:
           id: "jenkins-webhook"
+          password: "{AQAAABAAAAAwEQW1E6LeVlVkMiE7MV7oyTNkgV3IB9RfRYpvOAWIMHbTsuyjDXqGt6o2Ae03ABOka8oErM0MH54MifBXUny/og==}"
           scope: GLOBAL
-          usernamePassword:
-            username: "svet1aya88"
-            password: "{AQAAABAAAAAwEQW1E6LeVlVkMiE7MV7oyTNkgV3IB9RfRYpvOAWIMHbTsuyjDXqGt6o2Ae03ABOka8oErM0MH54MifBXUny/og==}"
+          username: "svet1aya88"
 jenkins:
   agentProtocols:
   - "JNLP4-connect"
