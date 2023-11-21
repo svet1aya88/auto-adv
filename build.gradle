@@ -79,9 +79,6 @@ project.task([type: Test], "run-testng") {
     useTestNG() {
         useDefaultListeners = false
         outputDirectory = file("$buildDir/testngOutput")
-        listeners = [
-                "com.epam.reportportal.testng.ReportPortalTestNGListener"
-        ]
 
         filter {
             suites("src/main/resources/testng/${project.findProperty("xml")}.xml")

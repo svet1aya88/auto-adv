@@ -13,10 +13,10 @@ import static com.codeborne.selenide.Selenide.$;
 public class SixtSearchBlock {
 
     public SixtSearchBlock fillPickUpAndReturn(String value) {
+        Logger.info("Fill pickup and return point as '{}'", value);
         $("#pickupLocation").shouldBe(visible).sendKeys(value);
         $(By.xpath("//div[@id='zensearch_root']//div[text()='Budapest Váci Road']"))
                 .shouldBe(visible, Duration.ofSeconds(10)).click();
-        Logger.info("Fill pickup and return point as '{}'", value);
         return this;
     }
 
