@@ -1,1 +1,9 @@
-
+stages:
+  - stage: Hello
+    steps:
+      - name: echo
+        command: echo "Hello World"
+  - stage: Build
+    steps:
+      - name: echo
+        command: echo "Building"
